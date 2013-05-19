@@ -1,7 +1,7 @@
 /**
  * 
  */
-package FileSharing;
+package com.example.FileSharing;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +13,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.HashSet;
+
+import com.example.FileSharing.Main;
 
 /**
  * @author Costash
@@ -28,28 +30,29 @@ public class ServerApplication extends Thread implements
 		selfSocket = client;
 		connected = true;
 	}
-	
+
 	@Override
 	public void run() {
 		while (connected) {
-			InputStream is = null;
-			ObjectInputStream oin = null;
-			try {
-				is = selfSocket.getInputStream();
-			} catch (IOException e) {
-				System.out.println("Could not read from stream from " + selfSocket.toString());
-				e.printStackTrace();
-			}
-			try {
-				oin = new ObjectInputStream(is);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(-1);
-			}
+			ObjectInputStream ois = Main.inputStreams.get(selfSocket);
 			
+			int buf;
+
+			try {
+				buf = ois.read();
+				System.err.println("Read buf " + buf);
+				if (buf == -1) {
+					System.err.println("Client has closed");
+					selfSocket.close();
+					connected = false;
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			/* Here comes the logic of the server */
-			
-			
+
 		}
 	}
 

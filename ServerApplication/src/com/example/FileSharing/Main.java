@@ -1,11 +1,13 @@
 /**
  * 
  */
-package FileSharing;
+package com.example.FileSharing;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -13,7 +15,8 @@ import java.util.HashSet;
  * 
  */
 public class Main {
-	public static HashSet<Socket> clientList = null;
+	public static HashSet<Socket> clientList = new HashSet<Socket>();
+	public static HashMap<Socket, ObjectInputStream> inputStreams = new HashMap<Socket, ObjectInputStream>();
 
 	/**
 	 * @param args
@@ -42,7 +45,6 @@ public class Main {
 			System.exit(-1);
 		}
 		
-		clientList = new HashSet<Socket>();
 
 		while (listening) {
 			Socket client = null;
@@ -56,6 +58,13 @@ public class Main {
 			}
 
 			clientList.add(client);
+			try {
+				ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
+				inputStreams.put(client, ois);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			new ServerApplication(client).start();
 		}

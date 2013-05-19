@@ -1,7 +1,7 @@
 /**
  * 
  */
-package FileSharing;
+package com.example.FileSharing;
 
 /**
  * @author Costash
