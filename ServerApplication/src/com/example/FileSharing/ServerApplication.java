@@ -41,13 +41,15 @@ public class ServerApplication extends Thread implements
 			Integer buf;
 
 			try {
-				buf = ois.readInt();//ois.read();
+				buf = (Integer)ois.readObject();//ois.read();
 				System.err.println("Read buf " + buf);
 				if (buf == -1) {
 					System.err.println("Client has closed");
 					selfSocket.close();
 					connected = false;
 				}
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
 			} catch (EOFException e) {
 				connected = false;
 			} catch (IOException e) {
