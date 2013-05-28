@@ -4,6 +4,7 @@
 package com.example.FileSharing;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,16 +37,19 @@ public class ServerApplication extends Thread implements
 		while (connected) {
 			ObjectInputStream ois = Main.inputStreams.get(selfSocket);
 			
-			int buf;
+			//int buf;
+			Integer buf;
 
 			try {
-				buf = ois.read();
+				buf = ois.readInt();//ois.read();
 				System.err.println("Read buf " + buf);
 				if (buf == -1) {
 					System.err.println("Client has closed");
 					selfSocket.close();
 					connected = false;
 				}
+			} catch (EOFException e) {
+				connected = false;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

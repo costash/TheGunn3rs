@@ -42,7 +42,9 @@ public class Main {
 
 		try {
 			System.err.println("Writing 42...");
-			oos.write(42);
+			//oos.write(42);
+			oos.writeInt(new Integer(42));
+			
 			oos.flush();
 			System.err.println("Written 42 to socket");
 		} catch (IOException e1) {
