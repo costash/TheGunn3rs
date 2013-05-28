@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.ObjectInputStream.GetField;
 import java.net.Socket;
 
 public class Main {
@@ -41,15 +42,25 @@ public class Main {
 		}
 
 		try {
-			System.err.println("Writing 42...");
+			Integer type = MessageType.getMessageType(MessageTypeEnum.CLIENT_INFO);
+			System.err.println("Sending message type " + type);
 			//oos.write(42);
-			oos.writeObject(new Integer(42));
+			oos.writeObject(type);
 			
 			oos.flush();
-			System.err.println("Written 42 to socket");
+			System.err.println("Written message type " + type);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		}
+		
+		try {
+			ClientInfo cInfo = new ClientInfo("192.168.0.1", 8888);
+			System.err.println("Sending clientInfo " + cInfo);
+			oos.writeObject(cInfo);
+			System.err.println("Sent clientInfo " + cInfo);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 		try {

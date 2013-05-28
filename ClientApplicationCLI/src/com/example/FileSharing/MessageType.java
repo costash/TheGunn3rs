@@ -28,4 +28,24 @@ public class MessageType {
 			return InvalidMessage;
 		}
 	}
+	
+	public static MessageTypeEnum getMessageTypeEnum(Integer type) {
+		if (type.compareTo(InvalidMessage) == 0) {
+			return MessageTypeEnum.INVALID_MESSAGE;
+		}
+		else if (type.compareTo(ListOfClients) == 0) {
+			return MessageTypeEnum.LIST_OF_CLIENTS;
+		}
+		else if (type.compareTo(ClientInfo) == 0) {
+			return MessageTypeEnum.CLIENT_INFO;
+		}
+		else if (type.compareTo(FileRequest) == 0) {
+			return MessageTypeEnum.FILE_REQUEST;
+		}
+		else if (type.compareTo(FileResponse) == 0) {
+			return MessageTypeEnum.FILE_RESPONSE;
+		}
+		else
+			return MessageTypeEnum.INVALID_MESSAGE;
+	}
 }
