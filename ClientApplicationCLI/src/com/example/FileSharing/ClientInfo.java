@@ -7,12 +7,14 @@ public class ClientInfo implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private String alias;
 	private String ip;
 	private int port;
 	
-	ClientInfo(String ip, int port) {
+	ClientInfo(String alias,String ip, int port) {
 		this.setIp(ip);
 		this.setPort(port);
+		this.setAlias(alias);
 	}
 
 	public String getIp() {
@@ -32,7 +34,15 @@ public class ClientInfo implements Serializable {
 	}
 	
 	public String toString() {
-		return "{ " + this.getIp() + ":" + this.getPort() + " }";
+		return "{ " + this.getAlias() +" on "+ this.getIp() + ":" + this.getPort() + " }";
+	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 }

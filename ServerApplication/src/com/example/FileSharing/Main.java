@@ -4,20 +4,18 @@
 package com.example.FileSharing;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * @author Costash
  * 
  */
 public class Main {
-	public static HashSet<Socket> clientList = new HashSet<Socket>();
-	public static HashMap<Socket, ObjectInputStream> inputStreams = new HashMap<Socket, ObjectInputStream>();
-	public static HashMap<Socket, ClientInfo> clientInfos = new HashMap<Socket, ClientInfo>();
+	public static ArrayList<String> clients = new ArrayList<String>();
+	public static HashMap<String,Info> pairing = new HashMap<String,Info>();
 
 	/**
 	 * @param args
@@ -58,15 +56,6 @@ public class Main {
 				e.printStackTrace();
 			}
 
-			clientList.add(client);
-			try {
-				ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
-				inputStreams.put(client, ois);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 			new ServerApplication(client).start();
 		}
 
@@ -77,4 +66,14 @@ public class Main {
 		}
 	}
 
+}
+
+class Info {
+	public String ip;
+	public int port;
+	
+	Info(String ip,int port){
+		this.ip = ip;
+		this.port = port;
+	}
 }

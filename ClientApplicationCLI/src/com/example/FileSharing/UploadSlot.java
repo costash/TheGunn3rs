@@ -12,32 +12,36 @@ public class UploadSlot extends Thread {
 
 	private static final int MAXSEND = 1000000;
 	Socket self;
+	private int slot_id;
 
-	public UploadSlot() {
+	public UploadSlot(int id) {
 		self = null;
+		this.slot_id = id;
 	}
 
 	public void run() {
 		while (true) {
-			synchronized (Main.servSock) {
+			synchronized (Main.connNotif[slot_id]) {
 				try {
-					self = Main.servSock.accept();
-				} catch (IOException e) {
+					Main.connNotif[slot_id].wait();
+				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			ObjectInputStream ois = null;
+			self = Main.connNotif[slot_id];
+			System.out.println(self.getLocalPort());
+			ObjectOutputStream oos = null;
 			try {
-				ois = new ObjectInputStream(self.getInputStream());
+				oos = new ObjectOutputStream(self.getOutputStream());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-			ObjectOutputStream oos = null;
+			
+			ObjectInputStream ois = null;
 			try {
-				oos = new ObjectOutputStream(self.getOutputStream());
+				ois = new ObjectInputStream(self.getInputStream());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -72,7 +76,12 @@ public class UploadSlot extends Thread {
 				}
 				break;
 			case 1002:
-				sendFileList(oos);
+				try {
+					sendFileList(oos);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				break;
 
 			default:
@@ -114,8 +123,9 @@ public class UploadSlot extends Thread {
 
 	}
 
-	private void sendFileList(ObjectOutputStream oos) {
-
+	private void sendFileList(ObjectOutputStream oos) throws IOException {
+		oos.writeObject(Main.sharedFiles);
 	}
+	
 
 }
