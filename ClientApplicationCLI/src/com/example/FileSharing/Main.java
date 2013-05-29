@@ -11,6 +11,7 @@ import java.net.ServerSocket;
 import java.io.ObjectInputStream.GetField;
 import java.net.Socket;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 public class Main {
 
@@ -49,7 +50,7 @@ public class Main {
 			slots = MAXSLOTS;
 
 		ObjectOutputStream oos = null;
-		//ObjectInputStream ois = null;
+		ObjectInputStream ois = null;
 		try {
 			oos = new ObjectOutputStream(s.getOutputStream());
 			//ois = new ObjectInputStream(s.getInputStream());
@@ -76,6 +77,23 @@ public class Main {
 			oos.writeObject(cInfo);
 			System.err.println("Sent clientInfo " + cInfo);
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			Integer type = MessageType.getMessageType(MessageTypeEnum.LIST_OF_CLIENTS);
+			System.err.println("Sending message type " + type);
+			oos.writeObject(type);
+			oos.flush();
+			System.err.println("Written message type " + type);
+			
+			LinkedList<ClientInfo> list = null;
+			System.err.println("Getting list of clients");
+			ois =  new ObjectInputStream(s.getInputStream());
+			
+			list = ((LinkedList<ClientInfo>) ois.readObject());
+			System.err.println("Got list of clients" + list);
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 

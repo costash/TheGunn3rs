@@ -13,7 +13,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 import com.example.FileSharing.Main;
 import com.example.FileSharing.MessageTypeEnum;
@@ -53,20 +55,32 @@ public class ServerApplication extends Thread implements
 				e.printStackTrace();
 			} catch (EOFException e) {
 				/* Close socket connection */
-				System.err.println("Client has closed connection");
+				
+				dispatchClient();
+				
 				try {
 					selfSocket.close();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				connected = false;
+			} catch (SocketException e) {
+				dispatchClient();
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			} 
 
 			/* Here comes the logic of the server */
 
 		}
+	}
+	
+	private void dispatchClient() {
+		connected = false;
+		Main.clientInfos.remove(selfSocket);
+		Main.inputStreams.remove(selfSocket);
+		Main.clientList.remove(selfSocket);
+		
+		System.err.println("Client has closed connection");
 	}
 
 	private void completeRequest(Integer messageType) {
@@ -74,6 +88,9 @@ public class ServerApplication extends Thread implements
 		case CLIENT_INFO:
 			/* Parseaza client */
 			parseClientInfoRequest();
+			break;
+		case LIST_OF_CLIENTS:
+			parseListOfClientsRequest();
 			break;
 
 		default:
@@ -90,7 +107,23 @@ public class ServerApplication extends Thread implements
 			Main.clientInfos.put(selfSocket, cInfo);
 
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void parseListOfClientsRequest() {
+		ObjectOutputStream oos;
+		LinkedList<ClientInfo> list = null;
+		list = new LinkedList<ClientInfo> (Main.clientInfos.values());
+		
+		try {
+			oos = new ObjectOutputStream(selfSocket.getOutputStream());
+			oos.flush();
+			System.err.println("Sending list of clients to " + Main.clientInfos.get(selfSocket));
+			oos.writeObject(list);
+			oos.flush();
+			System.err.println("Sent list of clients to " + Main.clientInfos.get(selfSocket));
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -105,6 +138,7 @@ public class ServerApplication extends Thread implements
 	public void SendInfo(Socket socket, String stream) throws IOException {
 		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 		out.write(stream);
+		out.flush();
 	}
 
 	/*
@@ -156,6 +190,7 @@ public class ServerApplication extends Thread implements
 			oos.writeObject(soc.getInetAddress());
 			oos.writeObject(new Integer(soc.getPort()));
 		}
+		oos.flush();
 
 	}
 
@@ -174,6 +209,6 @@ public class ServerApplication extends Thread implements
 
 		oos.writeObject(info.getInetAddress());
 		oos.writeObject(new Integer(info.getPort()));
-
+		oos.flush();
 	}
 }
