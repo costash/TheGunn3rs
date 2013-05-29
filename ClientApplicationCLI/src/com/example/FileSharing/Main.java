@@ -6,7 +6,7 @@ package com.example.FileSharing;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.io.ObjectInputStream.GetField;
 import java.net.Socket;
@@ -49,10 +49,10 @@ public class Main {
 			slots = MAXSLOTS;
 
 		ObjectOutputStream oos = null;
-		ObjectInputStream ois = null;
+		//ObjectInputStream ois = null;
 		try {
 			oos = new ObjectOutputStream(s.getOutputStream());
-			ois = new ObjectInputStream(s.getInputStream());
+			//ois = new ObjectInputStream(s.getInputStream());
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -63,7 +63,6 @@ public class Main {
 			System.err.println("Sending message type " + type);
 			//oos.write(42);
 			oos.writeObject(type);
-			
 			oos.flush();
 			System.err.println("Written message type " + type);
 		} catch (IOException e1) {
