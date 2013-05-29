@@ -82,7 +82,7 @@ public class ServerConnection extends Thread {
 				try {
 					ArrayList<String> clients = (ArrayList<String>) ois
 							.readObject();
-					System.out.println(clients.size());
+					System.out.println(clients.toString());
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

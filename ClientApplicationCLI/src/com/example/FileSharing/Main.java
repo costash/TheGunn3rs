@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 public class Main {
 
@@ -52,7 +53,7 @@ public class Main {
 		slots = Integer.parseInt(args[2]);
 		if (slots > MAXSLOTS)
 			slots = MAXSLOTS;
-		
+			
 		for (int i = 0; i < slots; i++) {
 			(new UploadSlot(i)).start();
 			(new DownloadSlot(i)).start();

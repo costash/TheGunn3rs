@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 import com.example.FileSharing.Main;
 
@@ -54,22 +57,18 @@ public class ServerApplication extends Thread {
 			int code = 1000;
 			String clientRequest = new String();
 			try {
-				sleep(10000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			try {
 				code = ois.readInt();
 				
 				if (code == 1002)
 					clientRequest = (String) ois.readObject();
 
 			} catch (IOException e) {
+				dispatchClient();
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
+			
 			switch (code) {
 			case 1001:
 				try {
@@ -93,8 +92,12 @@ public class ServerApplication extends Thread {
 			default:
 				break;
 			}
+
 		}
-		return;
 	}
 	
+	private void dispatchClient() {
+		connected = false;
+		System.err.println("Client has closed connection");
+	}
 }
