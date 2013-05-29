@@ -2,7 +2,7 @@ package com.example.FileSharing;
 
 import java.io.Serializable;
 
-public class ClientInfo implements Serializable{
+public class ClientInfo implements Serializable {
 	/**
 	 * 
 	 */
@@ -10,7 +10,7 @@ public class ClientInfo implements Serializable{
 	private String ip;
 	private int port;
 	
-	ClientInfo(String ip,int port){
+	ClientInfo(String ip, int port) {
 		this.setIp(ip);
 		this.setPort(port);
 	}
@@ -31,5 +31,8 @@ public class ClientInfo implements Serializable{
 		this.port = port;
 	}
 	
+	public String toString() {
+		return "{ " + this.getIp() + ":" + this.getPort() + " }";
+	}
 
 }

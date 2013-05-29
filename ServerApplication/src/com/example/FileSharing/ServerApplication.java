@@ -6,16 +6,18 @@ package com.example.FileSharing;
 import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
 
 import com.example.FileSharing.Main;
+import com.example.FileSharing.MessageTypeEnum;
+import com.example.FileSharing.MessageType;
 
 /**
  * @author Costash
@@ -36,29 +38,60 @@ public class ServerApplication extends Thread implements
 	public void run() {
 		while (connected) {
 			ObjectInputStream ois = Main.inputStreams.get(selfSocket);
-			
-			//int buf;
-			Integer buf;
+
+			Object buf;
 
 			try {
-				buf = (Integer)ois.readObject();//ois.read();
-				System.err.println("Read buf " + buf);
-				if (buf == -1) {
-					System.err.println("Client has closed");
-					selfSocket.close();
-					connected = false;
-				}
+				/* Get message type */
+				buf = ois.readObject();
+				Integer messageType = (Integer) buf;
+				System.err.println("Message type " + messageType);
+
+				completeRequest(messageType);
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (EOFException e) {
+				/* Close socket connection */
+				System.err.println("Client has closed connection");
+				try {
+					selfSocket.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 				connected = false;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 			/* Here comes the logic of the server */
 
+		}
+	}
+
+	private void completeRequest(Integer messageType) {
+		switch (MessageType.getMessageTypeEnum(messageType)) {
+		case CLIENT_INFO:
+			/* Parseaza client */
+			parseClientInfoRequest();
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	private void parseClientInfoRequest() {
+		ObjectInputStream ois = Main.inputStreams.get(selfSocket);
+
+		try {
+			ClientInfo cInfo = (ClientInfo) ois.readObject();
+			System.err.println("Client info " + cInfo);
+			Main.clientInfos.put(selfSocket, cInfo);
+
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

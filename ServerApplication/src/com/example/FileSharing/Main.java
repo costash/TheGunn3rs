@@ -17,6 +17,7 @@ import java.util.HashSet;
 public class Main {
 	public static HashSet<Socket> clientList = new HashSet<Socket>();
 	public static HashMap<Socket, ObjectInputStream> inputStreams = new HashMap<Socket, ObjectInputStream>();
+	public static HashMap<Socket, ClientInfo> clientInfos = new HashMap<Socket, ClientInfo>();
 
 	/**
 	 * @param args
