@@ -1,4 +1,5 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -6,10 +7,13 @@ class Gui extends JFrame{
 	public DefaultListModel modelmsg;
 	public DefaultListModel modelres;
 	public DefaultListModel modeluser;
+	public DefaultListModel modelUpDown;
 	final JList lstuser = new JList();
 	final JList lstmsg = new JList();
 	final JList lstres = new JList();
+	final JList lstupdown = new JList();
   	final JTextField Message = new JTextField(15);
+  	final JTextField SearchText = new JTextField(15);
 	public Gui(){
 		super();
 		
@@ -84,7 +88,7 @@ class Gui extends JFrame{
       	/*PANOU CAUTARE*/
       	JPanel JSearch = new JPanel();
       	JLabel LabelSearch=new JLabel("Cautare:");
-      	JTextField SearchText = new JTextField(15);
+      	
       	JButton butSearch = new JButton("Search");
       	
       //	butSearch.setSize(5, 3);
@@ -114,7 +118,7 @@ class Gui extends JFrame{
         modelres = new DefaultListModel();
         lstres.setModel(modelres);
         lstres.setSize(100, 100);
-        modelres.addElement("PETRESCU  Rares");
+        modelres.addElement("Aici va fi lista cu rezultate.");
       	Results.add(lstres);
       	
       	/*PANOU Userlist*/
@@ -123,20 +127,27 @@ class Gui extends JFrame{
         modeluser = new DefaultListModel();
         lstuser.setModel(modeluser);
         lstuser.setSize(100, 100);
-        modeluser.addElement("PETRESCU  Rares");
+        modeluser.addElement("Aici va fi lista cu useri.");
       	JUser.add(lstuser);
       	
       	
       	
         /*PANOU Jos*/
       	JPanel JDown = new JPanel();
-      	JButton jos = new JButton("sgfsg");
-      	JDown.add(jos);
+      	modelUpDown = new DefaultListModel();
+      	lstupdown.setModel(modelUpDown);
+        lstupdown.setSize(100, 100);
+        modelUpDown.addElement("Uploaduri/downloaduri active");
+      	JDown.add(lstupdown);
+ 
         
       	
       	
       	JSplitPane JUpLeft = new JSplitPane(JSplitPane.VERTICAL_SPLIT, JSearch, JMessage);
       //	JSplitPane JLeftDown = new JSplitPane(JSplitPane.VERTICAL_SPLIT, JUser, JMesReceived);
+      		JUpLeft.setResizeWeight(0.30);
+  			JUpLeft.setOneTouchExpandable(true);
+  			JUpLeft.setContinuousLayout(true);
       	JSplitPane JUpCenter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, JUpLeft, Results);
       	JSplitPane JUpAll = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, JUpCenter, JUser);
       		JUpAll.setResizeWeight(0.75);
@@ -155,7 +166,18 @@ class Gui extends JFrame{
         /*Cautare fisiere*/
         butSearch.addActionListener(new AddButtonListenerSearch());
         
+        /* TODO Preluare lista de fisiere de la user(Click stanga) si informatii despre el(Click dreapta)*/
+       
+        lstuser.addMouseListener(new MouseAdapter() {public void mouseClicked(MouseEvent me) {
+            if (me.getButton() == MouseEvent.BUTTON3) { 
+                //TODO aici se pune lstres.add(getClientFileList());
+                JOptionPane.showMessageDialog(null, (String) lstuser.getSelectedValue()+ " IP,etc");
+            }
 
+        }
+        });
+
+        
 		try {
 			UIManager.setLookAndFeel (
 				UIManager.getSystemLookAndFeelClassName());
@@ -181,17 +203,20 @@ class Gui extends JFrame{
 	
 	class AddButtonListenerSearch implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            if (Message.getText().equals("")) {
+            if (SearchText.getText().equals("")) {
+            	
+            	//TODO - atunci cand nu e nimic de cautat in textfield, afiseaza lista de clienti 
+            	
+            	/*int index = lstuser.getSelectedIndex();
+            	modeluser.insertElementAt(SearchText.getText(), index+1);
+            	lstuser.setSelectedIndex(index+1);*/
                return;
-            }
- 
-            int index = lstmsg.getSelectedIndex();
-            modelmsg.insertElementAt(Message.getText(), index+1);
-            lstmsg.setSelectedIndex(index+1);
-            
+            }           
             
         }
     }
+	
+	
 	
 	public static void main(String arg[]){
 		JFrame jf= new Gui();
