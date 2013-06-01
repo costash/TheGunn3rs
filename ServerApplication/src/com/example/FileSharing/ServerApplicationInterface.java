@@ -1,7 +1,7 @@
 /**
  * 
  */
-package FileSharing;
+package com.example.FileSharing;
 
 import java.io.IOException;
 import java.net.Socket;

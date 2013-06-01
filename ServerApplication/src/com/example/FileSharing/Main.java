@@ -1,19 +1,21 @@
 /**
  * 
  */
-package FileSharing;
+package com.example.FileSharing;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author Costash
  * 
  */
 public class Main {
-	public static HashSet<Socket> clientList = null;
+	public static ArrayList<String> clients = new ArrayList<String>();
+	public static HashMap<String,Info> pairing = new HashMap<String,Info>();
 
 	/**
 	 * @param args
@@ -42,7 +44,6 @@ public class Main {
 			System.exit(-1);
 		}
 		
-		clientList = new HashSet<Socket>();
 
 		while (listening) {
 			Socket client = null;
@@ -55,8 +56,6 @@ public class Main {
 				e.printStackTrace();
 			}
 
-			clientList.add(client);
-
 			new ServerApplication(client).start();
 		}
 
@@ -67,4 +66,14 @@ public class Main {
 		}
 	}
 
+}
+
+class Info {
+	public String ip;
+	public int port;
+	
+	Info(String ip,int port){
+		this.ip = ip;
+		this.port = port;
+	}
 }
