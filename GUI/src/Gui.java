@@ -1,10 +1,15 @@
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 
 class Gui extends JFrame{
-	public DefaultListModel model1;
+	public DefaultListModel modelmsg;
+	public DefaultListModel modelres;
+	public DefaultListModel modeluser;
+	final JList lstuser = new JList();
+	final JList lstmsg = new JList();
+	final JList lstres = new JList();
+  	final JTextField Message = new JTextField(15);
 	public Gui(){
 		super();
 		
@@ -89,42 +94,39 @@ class Gui extends JFrame{
       	JSearch.add(butSearch);
       	JSearch.setLayout(new FlowLayout());
       	
-      	/*PANOU USER CONECT*/
-      	JPanel JMessageSend=new JPanel();
+      	/*PANOU MESAJE*/
+      	JPanel JMessage=new JPanel();
       	JLabel labelmes=new JLabel("Scrie mesajul:");
       	JButton SendMessage = new JButton("Send");
-      	JTextField Message = new JTextField(15);
-      	JMessageSend.add(labelmes);
-      	JMessageSend.add(Message);
-      	JMessageSend.add(SendMessage);
       	
+      	JMessage.add(labelmes);
+      	JMessage.add(Message);
+      	JMessage.add(SendMessage);  	
+        modelmsg = new DefaultListModel();
+        lstmsg.setModel(modelmsg);
+        lstmsg.setSize(500, 500);
+        lstmsg.getAutoscrolls();
+        JMessage.add(lstmsg);
       	
       	/*PANOU REZULTATE*/
       	JPanel Results=new JPanel();
-      	JList lst = new JList();
-        model1 = new DefaultListModel();
-        lst.setModel(model1);
-        lst.setSize(100, 100);
-        model1.addElement("PETRESCU  Rares");
-      	Results.add(lst);
+      	
+        modelres = new DefaultListModel();
+        lstres.setModel(modelres);
+        lstres.setSize(100, 100);
+        modelres.addElement("PETRESCU  Rares");
+      	Results.add(lstres);
       	
       	/*PANOU Userlist*/
       	JPanel JUser = new JPanel();
-      	JList lstuser = new JList();
-        model1 = new DefaultListModel();
-        lstuser.setModel(model1);
+      	
+        modeluser = new DefaultListModel();
+        lstuser.setModel(modeluser);
         lstuser.setSize(100, 100);
-        model1.addElement("PETRESCU  Rares");
+        modeluser.addElement("PETRESCU  Rares");
       	JUser.add(lstuser);
       	
-      	/*PANOU Mesaje*/
-      	JPanel JMesReceived = new JPanel();
-      	JList lstmsg = new JList();
-        model1 = new DefaultListModel();
-        lstmsg.setModel(model1);
-        lstmsg.setSize(100, 100);
-        model1.addElement("PETRESCU  Rares");
-        JMesReceived.add(lstmsg);
+      	
       	
         /*PANOU Jos*/
       	JPanel JDown = new JPanel();
@@ -133,17 +135,26 @@ class Gui extends JFrame{
         
       	
       	
-      	JSplitPane JUpLeft = new JSplitPane(JSplitPane.VERTICAL_SPLIT, JSearch, JMessageSend);
-      	JSplitPane JUpRight = new JSplitPane(JSplitPane.VERTICAL_SPLIT, JUser, JMesReceived);
+      	JSplitPane JUpLeft = new JSplitPane(JSplitPane.VERTICAL_SPLIT, JSearch, JMessage);
+      //	JSplitPane JLeftDown = new JSplitPane(JSplitPane.VERTICAL_SPLIT, JUser, JMesReceived);
       	JSplitPane JUpCenter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, JUpLeft, Results);
-      	JSplitPane JUpAll = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, JUpCenter, JUpRight);
+      	JSplitPane JUpAll = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, JUpCenter, JUser);
+      		JUpAll.setResizeWeight(0.75);
+      		JUpAll.setOneTouchExpandable(true);
+      		JUpAll.setContinuousLayout(true);
       	JSplitPane JFinalPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, JUpAll,JDown);
-      	
+      		JFinalPane.setResizeWeight(0.75);
+      		JFinalPane.setOneTouchExpandable(true);
+      		JFinalPane.setContinuousLayout(true);
       	
         add(JFinalPane);
         
-      //  add(JUpCenter,BorderLayout.CENTER);
-        //add(JMessageSend);
+        /*Trimitere mesaje*/
+        SendMessage.addActionListener(new AddButtonListenerM());
+        
+        /*Cautare fisiere*/
+        butSearch.addActionListener(new AddButtonListenerSearch());
+        
 
 		try {
 			UIManager.setLookAndFeel (
@@ -153,7 +164,34 @@ class Gui extends JFrame{
 		setVisible(true);
 
 	}
-		
+	
+	class AddButtonListenerM implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            if (Message.getText().equals("")) {
+               return;
+            }
+ 
+            int index = lstmsg.getSelectedIndex();
+            modelmsg.insertElementAt(Message.getText(), index+1);
+            lstmsg.setSelectedIndex(index+1);
+            
+            
+        }
+    }
+	
+	class AddButtonListenerSearch implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            if (Message.getText().equals("")) {
+               return;
+            }
+ 
+            int index = lstmsg.getSelectedIndex();
+            modelmsg.insertElementAt(Message.getText(), index+1);
+            lstmsg.setSelectedIndex(index+1);
+            
+            
+        }
+    }
 	
 	public static void main(String arg[]){
 		JFrame jf= new Gui();
