@@ -17,27 +17,29 @@ public class Main {
 	public static String notifier = new String("notify");
 	public static String folder = null;
 	public static ArrayList<String> sharedFiles = null;
+	public static ArrayList<String> allClients = null;
 	public static String alias = null;
 	public static String servnotify = new String("servnotify");
 	public static String peer = new String();
 	public static int op = 1000;
 	public static String fname;
-	public static HashMap<String,Info> peers = new HashMap<String,Info>();
+	public static HashMap<String, Info> peers = new HashMap<String, Info>();
 	public static String downFolder;
 	public static String msg;
 	public static String signature;
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+
 		(new Gui()).run();
 
 		if (args.length < 3) {
 			System.err.println("Usage : ip + port + slots");
 			System.exit(1);
 		}
-		
+
 		(new CommandsParser()).start();
 		synchronized (notifier) {
 			try {
@@ -51,7 +53,7 @@ public class Main {
 		slots = Integer.parseInt(args[2]);
 		if (slots > MAXSLOTS)
 			slots = MAXSLOTS;
-			
+
 		for (int i = 0; i < slots; i++) {
 			(new UploadSlot()).start();
 			(new DownloadSlot()).start();
@@ -63,8 +65,8 @@ public class Main {
 class Info {
 	public String ip;
 	public int port;
-	
-	Info(String ip,int port){
+
+	Info(String ip, int port) {
 		this.ip = ip;
 		this.port = port;
 	}

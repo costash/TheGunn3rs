@@ -27,8 +27,8 @@ class Gui extends JFrame implements Runnable {
 		menuBar.add(ViewMenu);
 		menuBar.add(optiuniMenu);
 		menuBar.add(helpMenu);
-		JMenuItem exitAction = new JMenuItem("Exit");
 		JMenuItem connectAction = new JMenuItem("Connect");
+		JMenuItem exitAction = new JMenuItem("Exit");
 		fileMenu.add(exitAction);
 		fileMenu.add(connectAction);
 
@@ -135,7 +135,7 @@ class Gui extends JFrame implements Runnable {
 								+ "Laurentiu Tuca\n"
 								+ "\nSi studentii de la 333CC\n"
 								+ "Mihaela Culcus\n" + "Rares Petrescu\n"
-								+ "\n©2013 TheGunn3rs", "Despre program",
+								+ "\nï¿½2013 TheGunn3rs", "Despre program",
 						JOptionPane.PLAIN_MESSAGE);// informatii
 													// despre
 													// program
@@ -236,11 +236,45 @@ class Gui extends JFrame implements Runnable {
 		/* PANOU Userlist */
 		JPanel JUser = new JPanel();
 		JList lstuser = new JList();
+		JButton refresh = new JButton("Refresh");
 		model1 = new DefaultListModel();
 		lstuser.setModel(model1);
 		lstuser.setSize(100, 100);
 		model1.addElement("PETRESCU  Rares");
+		lstuser.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println(Main.MAXSLOTS);
+			}
+		});
 		JUser.add(lstuser);
+		JUser.add(refresh);
 
 		/* PANOU Mesaje */
 		JPanel JMesReceived = new JPanel();
@@ -248,8 +282,6 @@ class Gui extends JFrame implements Runnable {
 		model1 = new DefaultListModel();
 		lstmsg.setModel(model1);
 		lstmsg.setSize(100, 100);
-		model1.addElement("PETRESCU  Rares");
-		JMesReceived.add(lstmsg);
 
 		/* PANOU Jos */
 		JPanel JDown = new JPanel();

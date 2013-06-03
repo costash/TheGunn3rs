@@ -84,6 +84,7 @@ public class ServerConnection extends Thread {
 					ArrayList<String> clients = (ArrayList<String>) ois
 							.readObject();
 					System.out.println(clients.toString());
+					Main.allClients = clients;
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
