@@ -118,45 +118,67 @@ class Gui extends JFrame implements Runnable {
 
 				final JTextField textPort = new JTextField(10);
 				textPort.getText();
-				
+
 				connectButton.addMouseListener(new MouseListener() {
 
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
 						// TODO Auto-generated method stub
-						String ip = textIp.getText();
-						int port = Integer.parseInt(textPort.getText());
-						if (checkIpAndPort(ip, port) == true) {
-							connectToServer(ip, port);
-							frameGetConnectIp.dispose();
-						}
+						connectServerActivity(frameGetConnectIp, textIp,
+								textPort);
 					}
 
 					@Override
 					public void mouseEntered(MouseEvent arg0) {
 						// TODO Auto-generated method stub
-						
+
 					}
 
 					@Override
 					public void mouseExited(MouseEvent arg0) {
 						// TODO Auto-generated method stub
-						
+
 					}
 
 					@Override
 					public void mousePressed(MouseEvent arg0) {
 						// TODO Auto-generated method stub
-						
+
 					}
 
 					@Override
 					public void mouseReleased(MouseEvent arg0) {
 						// TODO Auto-generated method stub
-						
+
 					}
-					
+
 				});
+
+				connectButton.addKeyListener(new KeyListener() {
+
+					@Override
+					public void keyTyped(KeyEvent arg0) {
+						// TODO Auto-generated method stub
+					}
+
+					@Override
+					public void keyReleased(KeyEvent arg0) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void keyPressed(KeyEvent arg0) {
+						// TODO Auto-generated method stub
+						if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+							System.err.println("enter pressed on button");
+							connectServerActivity(frameGetConnectIp, textIp,
+									textPort);
+						}
+					}
+				});
+				
+				textPort.addKeyListener(connectButton.getKeyListeners()[0]);
 
 				getIpPanel.add(labelIp);
 				getIpPanel.add(textIp);
@@ -331,7 +353,7 @@ class Gui extends JFrame implements Runnable {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	private void connectToServer(String ip, int port) {
 		try {
 			Main.servSock = new ServerSocket(10001);
@@ -353,11 +375,11 @@ class Gui extends JFrame implements Runnable {
 			Main.notifier.notify();
 		}
 	}
-	
+
 	private boolean checkIpAndPort(String ip, int port) {
 		if (port < 1024 || port > 65000)
 			return false;
-		
+
 		StringTokenizer st = new StringTokenizer(ip, ".");
 		int step = 0;
 		while (st.hasMoreTokens()) {
@@ -366,8 +388,24 @@ class Gui extends JFrame implements Runnable {
 				return false;
 			++step;
 		}
-		
+
 		return true;
+	}
+
+	/**
+	 * @param frameGetConnectIp
+	 * @param textIp
+	 * @param textPort
+	 */
+	private void connectServerActivity(final JFrame frameGetConnectIp,
+			final JTextField textIp, final JTextField textPort) {
+		String ip = textIp.getText();
+		int port = Integer.parseInt(textPort.getText());
+		if (checkIpAndPort(ip, port) == true) {
+			connectToServer(ip, port);
+			frameGetConnectIp.transferFocus();
+			frameGetConnectIp.dispose();
+		}
 	}
 
 }
