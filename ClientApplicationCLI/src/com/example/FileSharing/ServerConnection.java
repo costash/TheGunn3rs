@@ -12,19 +12,25 @@ public class ServerConnection extends Thread {
 	public static String lock = "srv";
 	public static int op_code = 1000;
 	public static String client = "null";
+	private String ip = null;
 
-	public ServerConnection() {
+	public ServerConnection(String ip) {
 		try {
 			oos = new ObjectOutputStream(Main.connectionSock.getOutputStream());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		this.ip = ip;
 
+	}
+	
+	public String GetIp() {
+		return this.ip;
 	}
 
 	public void run() {
-		ClientInfo myInfo = new ClientInfo(Main.alias, "127.0.0.1",
+		ClientInfo myInfo = new ClientInfo(Main.alias, this.ip,
 				Main.servSock.getLocalPort());
 		System.out.println("port: " + Main.servSock.getLocalPort());
 		try {

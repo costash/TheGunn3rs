@@ -48,7 +48,7 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
-		(new ServerConnection()).start();
+		(new ServerConnection("127.0.0.1")).start();
 
 		slots = Integer.parseInt(args[2]);
 		if (slots > MAXSLOTS)
