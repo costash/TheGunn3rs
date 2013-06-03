@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.StringTokenizer;
 
 class Gui extends JFrame implements Runnable {
 	public DefaultListModel model1;
@@ -100,30 +101,74 @@ class Gui extends JFrame implements Runnable {
 			}
 		});
 
+		final JFrame frameGetConnectIp = new JFrame("Conenct to server");
+
 		connectAction.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				try {
-					Main.servSock = new ServerSocket(10001);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				Main.alias = "laur";
-				try {
-					Main.connectionSock = new Socket("127.0.0.1", 6969);
-				} catch (UnknownHostException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				} catch (IOException e3) {
-					// TODO Auto-generated catch block
-					e3.printStackTrace();
-				}
-				synchronized (Main.notifier) {
-					Main.notifier.notify();
-				}
+
+				JPanel getIpPanel = new JPanel();
+				JLabel labelIp = new JLabel("Introduceti IP-ul serverului:");
+				JLabel labelPort = new JLabel("Introduceti port-ul serverului:");
+				JButton connectButton = new JButton("Connect");
+
+				final JTextField textIp = new JTextField(30);
+				textIp.getText();
+
+				final JTextField textPort = new JTextField(10);
+				textPort.getText();
+				
+				connectButton.addMouseListener(new MouseListener() {
+
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						String ip = textIp.getText();
+						int port = Integer.parseInt(textPort.getText());
+						if (checkIpAndPort(ip, port) == true) {
+							connectToServer(ip, port);
+							frameGetConnectIp.dispose();
+						}
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseExited(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mousePressed(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
+
+				getIpPanel.add(labelIp);
+				getIpPanel.add(textIp);
+				getIpPanel.add(labelPort);
+				getIpPanel.add(textPort);
+				getIpPanel.add(connectButton);
+
+				frameGetConnectIp.add(getIpPanel);
+				frameGetConnectIp.setLayout(new FlowLayout());
+				frameGetConnectIp.pack();
+				frameGetConnectIp.setVisible(true);
+
 			}
 		});
 		infoAction.addActionListener(new ActionListener() {
@@ -285,6 +330,44 @@ class Gui extends JFrame implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	private void connectToServer(String ip, int port) {
+		try {
+			Main.servSock = new ServerSocket(10001);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Main.alias = "laur";
+		try {
+			Main.connectionSock = new Socket(ip, port);
+		} catch (UnknownHostException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IOException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		}
+		synchronized (Main.notifier) {
+			Main.notifier.notify();
+		}
+	}
+	
+	private boolean checkIpAndPort(String ip, int port) {
+		if (port < 1024 || port > 65000)
+			return false;
+		
+		StringTokenizer st = new StringTokenizer(ip, ".");
+		int step = 0;
+		while (st.hasMoreTokens()) {
+			int tok = Integer.parseInt(st.nextToken());
+			if (tok < 0 || tok > 255 || step > 4)
+				return false;
+			++step;
+		}
+		
+		return true;
 	}
 
 }
