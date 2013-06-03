@@ -10,26 +10,20 @@ import java.net.Socket;
 
 public class UploadSlot extends Thread {
 
-	private static final int MAXSEND = 1000000;
-	Socket self;
-	private int slot_id;
-
-	public UploadSlot(int id) {
-		self = null;
-		this.slot_id = id;
-	}
+	public static final int MAXSEND = 64000;
+	Socket self = null;
 
 	public void run() {
 		while (true) {
-			synchronized (Main.connNotif[slot_id]) {
+			synchronized (Main.servSock) {
 				try {
-					Main.connNotif[slot_id].wait();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
+					self = Main.servSock.accept();
+				} catch (IOException e) {
+					System.err.println("Cannot accept connection");
 					e.printStackTrace();
 				}
 			}
-			self = Main.connNotif[slot_id];
+			
 			System.out.println(self.getLocalPort());
 			ObjectOutputStream oos = null;
 			try {
@@ -57,10 +51,11 @@ public class UploadSlot extends Thread {
 			}
 			
 			switch (msg_type) {
-			case 1001:
+			case 1002:
 				String fname = null;
 				try {
 					fname = (String) ois.readObject();
+					fname = Main.folder+"/"+fname;
 				} catch (ClassNotFoundException e2) {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
@@ -75,7 +70,7 @@ public class UploadSlot extends Thread {
 					e1.printStackTrace();
 				}
 				break;
-			case 1002:
+			case 1001:
 				try {
 					sendFileList(oos);
 				} catch (IOException e1) {
@@ -101,20 +96,22 @@ public class UploadSlot extends Thread {
 
 	private static void sendFile(File f, ObjectOutputStream oos)
 			throws FileNotFoundException {
+		System.err.println("Trimitem fisierul "+f.getName());
 		long length = f.length();
 		FileInputStream fis = new FileInputStream(f);
 		long sent = 0;
 		byte[] buf = new byte[MAXSEND];
 		try {
 			oos.writeLong(length);
+			oos.flush();
 
 			while (sent < length) {
+				int next = (int) ((sent + MAXSEND > length) ? length - sent : MAXSEND);
 				fis.read(buf);
-				oos.write(buf);
+				oos.write(buf, 0, next);
+				oos.flush();
 				sent += MAXSEND;
 			}
-
-			oos.writeInt(-1);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -125,6 +122,7 @@ public class UploadSlot extends Thread {
 
 	private void sendFileList(ObjectOutputStream oos) throws IOException {
 		oos.writeObject(Main.sharedFiles);
+		oos.flush();
 	}
 	
 

@@ -80,6 +80,7 @@ public class ServerConnection extends Thread {
 			switch (op_code) {
 			case 1001:
 				try {
+					@SuppressWarnings("unchecked")
 					ArrayList<String> clients = (ArrayList<String>) ois
 							.readObject();
 					System.out.println(clients.toString());

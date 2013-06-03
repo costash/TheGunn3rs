@@ -7,7 +7,13 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/**
+ * Parserul de comenzi 
+ * util pentru folosirea in linie de comanda
+ * necesar pentru GUI
+ * @author laur
+ *
+ */
 public class CommandsParser extends Thread {
 
 	private Scanner input = null;
@@ -20,20 +26,20 @@ public class CommandsParser extends Thread {
 	public void run() {
 		String com = null;
 		while (true) {
-			System.out.print("laur@laur> ");
+			System.out.print(Main.alias+"> ");
 			com = input.next();
 
-			if (com.equals("setalias")) {
+			if (com.equals("alias")) {
 				Main.alias = new String(input.next());
 				continue;
 			}
 
-			if (com.equals("alias")) {
+			if (com.equals("me")) {
 				System.out.println(Main.alias);
 				continue;
 			}
 
-			if (com.equals("setshared")) {
+			if (com.equals("upfold")) {
 				Main.sharedFiles.clear();
 				Main.folder = new String(input.next());
 				File folderName = new File(Main.folder);
@@ -42,29 +48,32 @@ public class CommandsParser extends Thread {
 					Main.sharedFiles.add(files[i].getName());
 				continue;
 			}
+			
+			if(com.equals("dfold")){
+				Main.downFolder = input.next();
+				continue;
+			}
 
-			if (com.equals("showshared")) {
+			if (com.equals("upview")) {
 				for (int i = 0; i < Main.sharedFiles.size(); i++) {
 					System.out.println(Main.sharedFiles.get(i));
 				}
 				continue;
 			}
 
-			if (com.equals("setsock")) {
+			if (com.equals("sock")) {
 				int port = Integer.parseInt(input.next());
 				try {
 					Main.servSock = new ServerSocket(port);
-					System.err
-							.println("Client wait connection on port " + port);
-					System.err.println(Main.servSock.getInetAddress()
-							.getHostAddress().toString());
+					System.out
+							.println("Client waits connection on port " + port);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 				continue;
 			}
 
-			if (com.equals("connect")) {
+			if (com.equals("connect") | com.equals("co")) {
 				String ip = input.next();
 				int port = Integer.parseInt(input.next());
 				try {
@@ -82,7 +91,7 @@ public class CommandsParser extends Thread {
 				continue;
 			}
 
-			if (com.equals("getclients")) {
+			if (com.equals("srvcli")) {
 				// deblocam serverconnection si trimitem cerere la server
 				ServerConnection.op_code = 1001;
 				synchronized (ServerConnection.lock) {
@@ -91,11 +100,10 @@ public class CommandsParser extends Thread {
 				continue;
 			}
 
-			if (com.equals("getinfo")) {
+			if (com.equals("infocli")) {
 				ServerConnection.op_code = 1002;
 				ServerConnection.client = input.next();
 				synchronized (ServerConnection.lock) {
-					System.err.println("notificam");
 					ServerConnection.lock.notify();
 				}
 				continue;
@@ -107,34 +115,34 @@ public class CommandsParser extends Thread {
 			}
 			if (com.equals("search")) {
 				String fname = input.next();
-				// TODO req all clients + req to clients for their filelist +
-				// search
-
+				System.out.println(fname);
 				continue;
 			}
 
 			if (com.equals("download")) {
 				String fname = input.next();
 				String clientname = input.next();
-				// TODO in uploadslot fac req file in download slot primesc file
-
-				continue;
-			}
-
-			if (com.equals("get_filelist")) {
-				String clientname = input.next();
-				synchronized (Main.downslot[Main.sid_down]) {
-					Main.downslot[Main.sid_down] = clientname;
-					Main.downslot[Main.sid_down].notify();
-					Main.sid_down++;
-					if (Main.sid_down == 5)
-						Main.sid_down = 0;
+				Main.peer = clientname;
+				Main.fname = fname;
+				Main.op = 1002;
+				
+				synchronized (DownloadSlot.peer) {
+					DownloadSlot.peer.notify();
 				}
-				// TODO in uploadslot req fl in down recv fl
 				continue;
 			}
 
-			if (com.equals("disconnect")) {
+			if (com.equals("uplist")) {
+				String clientname = input.next();
+				Main.peer = clientname;
+				Main.op = 1001;
+				synchronized (DownloadSlot.peer) {
+					DownloadSlot.peer.notify();
+				}
+				continue;
+			}
+
+			if (com.equals("disc")) {
 				// TODO send disconnect msg to server
 			}
 

@@ -1,35 +1,48 @@
 package com.example.FileSharing;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
-public class DownloadSlot extends Thread{
-	
-	private int slot_id;
-	private Socket self;
+public class DownloadSlot extends Thread {
 
-	public DownloadSlot(int id){
-		this.slot_id = id;
-		this.self = null;
-	}
-	
-	public void run(){
-		while(true){
-			synchronized (Main.downslot[slot_id]) {
+	public static String peer = new String();
+
+	public void run() {
+		while (true) {
+			String peer = null;
+			String fname = null;
+			int op;
+			// asteptam conexiune catre un peer
+			synchronized (DownloadSlot.peer) {
 				try {
-					Main.downslot[slot_id].wait();
+					DownloadSlot.peer.wait();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				peer = Main.peer;
+				fname = Main.fname;
+				op = Main.op;
 			}
-			
-			Info i = Main.peers.get(Main.downslot[slot_id]);
-			
+
+			Info i = Main.peers.get(peer);
+			Socket s = null;
+			ObjectOutputStream oos = null;
+			ObjectInputStream ois = null;
+
 			try {
-				self = new Socket(i.ip,i.port);
+				s = new Socket(i.ip, i.port);
+				oos = new ObjectOutputStream(s.getOutputStream());
+				oos.writeInt(op);
+				if (op == 1002)
+					oos.writeObject(fname);
+				oos.flush();
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -37,12 +50,68 @@ public class DownloadSlot extends Thread{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
+			try {
+				ois = new ObjectInputStream(s.getInputStream());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			switch (op) {
+			case 1001:
+				try {
+					@SuppressWarnings("unchecked")
+					ArrayList<String> files = (ArrayList<String>) ois
+							.readObject();
+					System.out.println(files.toString());
+				} catch (ClassNotFoundException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case 1002:
+				try {
+					long start = System.nanoTime();
+					recvFile(ois);
+					long end = System.nanoTime();
+					System.out.println("Transfer fisier realizat in "
+							+ (end - start)/1000000000 + " secunde");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				break;
+			default:
+				break;
+			}
+
+			try {
+				ois.close();
+				oos.close();
+				s.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	
-	public void recvFile(ObjectInputStream ois){
+
+	public void recvFile(ObjectInputStream ois) throws IOException {
+
+		String pathname = Main.downFolder + "/" + Main.fname;
+		File f = new File(pathname);
+		FileOutputStream fos = new FileOutputStream(f);
+		long length = ois.readLong();
+		System.out.println("File : " + pathname + " dim : " + length);
+		byte[] buf = new byte[UploadSlot.MAXSEND];
+		long recv = 0;
+		while (recv < length) {
+			int next = ois.read(buf);
+			fos.write(buf, 0, next);
+			recv += next;
+		}
+		System.out.println(recv);
+		fos.close();
 		
 	}
 }

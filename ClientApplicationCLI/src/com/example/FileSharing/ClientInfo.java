@@ -1,7 +1,13 @@
 package com.example.FileSharing;
 
 import java.io.Serializable;
-
+/**
+ * Clasa ce contine informatii despre un client
+ * Implementeaza interfata serializable pentru
+ * a putea transmite informatiile pe retea
+ * @author laur
+ *
+ */
 public class ClientInfo implements Serializable {
 	/**
 	 * 
