@@ -31,51 +31,52 @@ class Gui extends JFrame implements Runnable {
 		JMenuItem connectAction = new JMenuItem("Connect");
 		fileMenu.add(exitAction);
 		fileMenu.add(connectAction);
-		
+
+		/* Listener for the current window */
 		addWindowListener(new WindowListener() {
-			
+
 			@Override
 			public void windowOpened(WindowEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void windowIconified(WindowEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void windowDeiconified(WindowEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void windowDeactivated(WindowEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				// TODO Auto-generated method stub
 				dispose();
 				System.exit(0);
 			}
-			
+
 			@Override
 			public void windowClosed(WindowEvent arg0) {
 				// TODO Auto-generated method stub
 				dispose();
 				System.exit(0);
 			}
-			
+
 			@Override
 			public void windowActivated(WindowEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
@@ -128,8 +129,16 @@ class Gui extends JFrame implements Runnable {
 		infoAction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(new JFrame(),
-						"Made by TheGunn3rs", "Despre program",
-						JOptionPane.PLAIN_MESSAGE);// informatii despre program
+						"TheGunn3rs Project\n"
+								+ "Created by:\n\nStudentii de la 333CA\n"
+								+ "Constantin Serban-Radoi\n"
+								+ "Laurentiu Tuca\n"
+								+ "\nSi studentii de la 333CC\n"
+								+ "Mihaela Culcus\n" + "Rares Petrescu\n"
+								+ "\n©2013 TheGunn3rs", "Despre program",
+						JOptionPane.PLAIN_MESSAGE);// informatii
+													// despre
+													// program
 			}
 		});
 		FinishedUploads.addActionListener(new ActionListener() {
