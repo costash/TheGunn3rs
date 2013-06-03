@@ -24,6 +24,8 @@ public class Main {
 	public static String fname;
 	public static HashMap<String,Info> peers = new HashMap<String,Info>();
 	public static String downFolder;
+	public static String msg;
+	public static String signature;
 	/**
 	 * @param args
 	 */

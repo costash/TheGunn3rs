@@ -7,12 +7,13 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 /**
- * Parserul de comenzi 
- * util pentru folosirea in linie de comanda
- * necesar pentru GUI
+ * Parserul de comenzi util pentru folosirea in linie de comanda necesar pentru
+ * GUI
+ * 
  * @author laur
- *
+ * 
  */
 public class CommandsParser extends Thread {
 
@@ -26,11 +27,12 @@ public class CommandsParser extends Thread {
 	public void run() {
 		String com = null;
 		while (true) {
-			System.out.print(Main.alias+"> ");
+			System.out.print(Main.alias + "> ");
 			com = input.next();
 
 			if (com.equals("alias")) {
 				Main.alias = new String(input.next());
+				Main.signature = new String(Main.alias + " says: ");
 				continue;
 			}
 
@@ -48,8 +50,8 @@ public class CommandsParser extends Thread {
 					Main.sharedFiles.add(files[i].getName());
 				continue;
 			}
-			
-			if(com.equals("dfold")){
+
+			if (com.equals("dfold")) {
 				Main.downFolder = input.next();
 				continue;
 			}
@@ -65,8 +67,8 @@ public class CommandsParser extends Thread {
 				int port = Integer.parseInt(input.next());
 				try {
 					Main.servSock = new ServerSocket(port);
-					System.out
-							.println("Client waits connection on port " + port);
+					System.out.println("Client waits connection on port "
+							+ port);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -89,6 +91,16 @@ public class CommandsParser extends Thread {
 					Main.notifier.notify();
 				}
 				continue;
+			}
+
+			if (com.equals("msg")) {
+				Main.peer = input.next();
+				Main.msg = input.nextLine();
+				Main.op = 1003;
+				synchronized (DownloadSlot.peer) {
+					DownloadSlot.peer.notify();
+				}
+
 			}
 
 			if (com.equals("srvcli")) {
@@ -125,7 +137,7 @@ public class CommandsParser extends Thread {
 				Main.peer = clientname;
 				Main.fname = fname;
 				Main.op = 1002;
-				
+
 				synchronized (DownloadSlot.peer) {
 					DownloadSlot.peer.notify();
 				}
