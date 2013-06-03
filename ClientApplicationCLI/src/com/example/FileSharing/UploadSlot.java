@@ -78,7 +78,16 @@ public class UploadSlot extends Thread {
 					e1.printStackTrace();
 				}
 				break;
-
+			case 1003:
+				try {
+					System.out.println((String)ois.readObject());;
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			default:
 				break;
 			}
@@ -120,10 +129,8 @@ public class UploadSlot extends Thread {
 
 	}
 
-	private void sendFileList(ObjectOutputStream oos) throws IOException {
+	private static void sendFileList(ObjectOutputStream oos) throws IOException {
 		oos.writeObject(Main.sharedFiles);
 		oos.flush();
 	}
-	
-
 }

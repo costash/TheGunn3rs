@@ -82,6 +82,15 @@ public class DownloadSlot extends Thread {
 					e1.printStackTrace();
 				}
 				break;
+			case 1003:
+				try {
+					sendMsg(oos);
+					System.out.println(Main.signature+Main.msg);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			default:
 				break;
 			}
@@ -113,5 +122,9 @@ public class DownloadSlot extends Thread {
 		System.out.println(recv);
 		fos.close();
 		
+	}
+	
+	public static void sendMsg(ObjectOutputStream oos) throws IOException{
+		oos.writeObject(Main.signature+Main.msg);
 	}
 }
