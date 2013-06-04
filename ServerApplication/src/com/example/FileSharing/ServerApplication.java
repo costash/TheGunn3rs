@@ -74,7 +74,7 @@ public class ServerApplication extends Thread {
 			case 1001:
 				try {
 					System.out.println(Main.clients.toString());
-					oos.writeObject(Main.clients);
+					oos.writeObject(Main.clients.clone());
 					oos.flush();
 				} catch (IOException e) {
 					e.printStackTrace();
