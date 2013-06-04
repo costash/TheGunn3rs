@@ -64,7 +64,6 @@ public class CommandsParser extends Thread {
 			}
 
 			if (com.equals("sock")) {
-				int port = Integer.parseInt(input.next());
 				try {
 					Main.servSock = new ServerSocket(0);
 					System.out.println("Client waits connection on port "

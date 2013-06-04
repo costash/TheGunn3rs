@@ -13,6 +13,7 @@ public class ServerConnection extends Thread {
 	public static int op_code = 1000;
 	public static String client = "null";
 	private String ip = null;
+	public static String[] crtClients = null;
 
 	public ServerConnection(String ip) {
 		try {
