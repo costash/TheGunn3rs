@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 import java.util.StringTokenizer;
 
 class Gui extends JFrame implements Runnable {
-	public DefaultListModel model1;
+	public DefaultListModel model1,usrListModel;
 
 	public Gui() {
 		super();
@@ -177,7 +177,7 @@ class Gui extends JFrame implements Runnable {
 						}
 					}
 				});
-				
+
 				textPort.addKeyListener(connectButton.getKeyListeners()[0]);
 
 				getIpPanel.add(labelIp);
@@ -304,44 +304,8 @@ class Gui extends JFrame implements Runnable {
 		JPanel JUser = new JPanel();
 		JList lstuser = new JList();
 		JButton refresh = new JButton("Refresh");
-		model1 = new DefaultListModel();
-		lstuser.setModel(model1);
-		lstuser.setSize(100, 100);
-		model1.addElement("PETRESCU  Rares");
-		lstuser.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println(Main.MAXSLOTS);
-			}
-		});
-		JUser.add(lstuser);
-		JUser.add(refresh);
+		userListHandle(JUser, lstuser, refresh);
+		
 
 		/* PANOU Mesaje */
 		JPanel JMesReceived = new JPanel();
@@ -387,12 +351,6 @@ class Gui extends JFrame implements Runnable {
 	}
 
 	private void connectToServer(String ip, int port) {
-		try {
-			Main.servSock = new ServerSocket(10001);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		Main.alias = "laur";
 		try {
 			Main.connectionSock = new Socket(ip, port);
@@ -438,6 +396,56 @@ class Gui extends JFrame implements Runnable {
 			frameGetConnectIp.transferFocus();
 			frameGetConnectIp.dispose();
 		}
+	}
+
+	private void userListHandle(JPanel usrPanel, JList usrList,
+			JButton refreshButton) {
+		usrListModel = new DefaultListModel();
+		usrList.setModel(usrListModel);
+		usrList.setSize(100, 100);
+		getServerUserList(usrList, refreshButton);
+		usrPanel.add(usrList);
+		usrPanel.add(refreshButton);
+	}
+
+	private void getServerUserList(JList usrList, JButton refreshButton) {
+		refreshButton.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ServerConnection.op_code = 1001;
+				synchronized (ServerConnection.lock) {
+					ServerConnection.lock.notify();
+				}
+				usrListModel.removeAllElements();
+				//for(int i = 0;i < Main.allClients.size();i++)
+					usrListModel.addElement(Main.allClients.get(0));
+			}
+		});
 	}
 
 }

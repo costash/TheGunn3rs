@@ -1,5 +1,6 @@
 package com.example.FileSharing;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -33,14 +34,22 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
-		//(new Gui()).run();
-
-		if (args.length < 3) {
-			System.err.println("Usage : ip + port + slots");
+		
+		if(args.length > 1 || (args.length == 1 && !args[0].equals("-gui"))){
+			System.err.println("Usage : [/-gui]");
 			System.exit(1);
 		}
-
-		(new CommandsParser()).start();
+		try {
+			servSock = new ServerSocket(0);
+		} catch (IOException e1) {
+			System.err.println("Cannot bind any port");
+			e1.printStackTrace();
+		}
+		if(args.length == 1)
+			(new Gui()).run();//daca aplicatia este pornita cu -gui
+		else
+			(new CommandsParser()).start();
+		
 		synchronized (notifier) {
 			try {
 				notifier.wait();
@@ -48,13 +57,9 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
-		(new ServerConnection("127.0.0.1")).start();
+		(new ServerConnection("127.0.0.1")).start();//ne conectam la un server,de modif partea cu 127....
 
-		slots = Integer.parseInt(args[2]);
-		if (slots > MAXSLOTS)
-			slots = MAXSLOTS;
-
-		for (int i = 0; i < slots; i++) {
+		for (int i = 0; i < MAXSLOTS; i++) {
 			(new UploadSlot()).start();
 			(new DownloadSlot()).start();
 		}
