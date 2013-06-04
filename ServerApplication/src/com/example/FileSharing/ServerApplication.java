@@ -49,7 +49,6 @@ public class ServerApplication extends Thread {
 
 			System.out.println(info.toString());
 		} catch (IOException | ClassNotFoundException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 
@@ -77,7 +76,6 @@ public class ServerApplication extends Thread {
 					oos.writeObject(Main.clients);
 					oos.flush();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
@@ -87,7 +85,6 @@ public class ServerApplication extends Thread {
 					oos.writeObject(new ClientInfo(clientRequest, i.ip, i.port));
 					oos.flush();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
@@ -107,5 +104,6 @@ public class ServerApplication extends Thread {
 			Main.clients.remove(alias);
 		}
 		System.err.println("Client " + alias + " has closed connection");
+		System.err.println("Current list of clients " + Main.clients);
 	}
 }
