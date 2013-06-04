@@ -22,7 +22,7 @@ public class ReadStdin extends Thread {
 			try {
 				String line = in.readLine();
 				
-				if (line.compareTo("quit") == 0) {
+				if (line.equals("quit") || line.equals("exit")) {
 					System.out.println("Server is shutting down");
 					System.exit(0);
 				}

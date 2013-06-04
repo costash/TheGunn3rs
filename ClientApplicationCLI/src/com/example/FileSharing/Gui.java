@@ -387,7 +387,7 @@ class Gui extends JFrame implements Runnable {
 
 	private void connectToServer(String ip, int port) {
 		try {
-			Main.servSock = new ServerSocket(10001);
+			Main.servSock = new ServerSocket(0);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

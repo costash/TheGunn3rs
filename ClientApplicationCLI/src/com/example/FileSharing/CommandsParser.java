@@ -158,7 +158,7 @@ public class CommandsParser extends Thread {
 				// TODO send disconnect msg to server
 			}
 
-			if (com.equals("exit")) {
+			if (com.equals("exit") || com.equals("quit")) {
 				System.out.println("Ciao!!!");
 				System.exit(0);
 			}

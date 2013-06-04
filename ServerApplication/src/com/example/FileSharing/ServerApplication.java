@@ -106,6 +106,6 @@ public class ServerApplication extends Thread {
 		synchronized (Main.clients) {
 			Main.clients.remove(alias);
 		}
-		System.err.println("Client has closed connection");
+		System.err.println("Client " + alias + " has closed connection");
 	}
 }

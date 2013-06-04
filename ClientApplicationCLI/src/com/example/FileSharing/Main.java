@@ -33,7 +33,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
-		//(new Gui()).run();
+		(new Gui()).run();
 
 		if (args.length < 3) {
 			System.err.println("Usage : ip + port + slots");
