@@ -299,13 +299,8 @@ class Gui extends JFrame implements Runnable {
 
 		JSplitPane JUpLeft = new JSplitPane(JSplitPane.VERTICAL_SPLIT, JSearch,
 				JMessageSend);
-<<<<<<< HEAD
-		JSplitPane JUpRight = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				usrPanel, JMesReceived);
-=======
 		JSplitPane JUpRight = new JSplitPane(JSplitPane.VERTICAL_SPLIT, usrPanel,
 				usrListPanel);
->>>>>>> b1c0af669a9662c32196d678c8b9b9027a0512cd
 		JSplitPane JUpCenter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				JUpLeft, Results);
 		JSplitPane JUpAll = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
@@ -389,7 +384,7 @@ class Gui extends JFrame implements Runnable {
 		usrListModel = new DefaultListModel();
 		usrList.setModel(usrListModel);
 		usrList.setSize(300, 300);
-		getServerUserList(usrList, refreshButton);
+		getServerUserList(refreshButton);
 		usrPanel.add(refreshButton);
 		usrListPanel.add(usrList);
 	}
