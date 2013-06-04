@@ -92,6 +92,11 @@ public class ServerConnection extends Thread {
 							.readObject();
 					System.out.println(clients.toString());
 					Main.allClients = clients;
+					if(Main.gui){
+						synchronized (Gui.usrListNotif) {
+							Gui.usrListNotif.notify();
+						}
+					}
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

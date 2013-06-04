@@ -12,6 +12,7 @@ import java.util.StringTokenizer;
 
 class Gui extends JFrame implements Runnable {
 	public DefaultListModel model1,usrListModel;
+	public static String usrListNotif = new String();
 
 	public Gui() {
 		super();
@@ -447,8 +448,15 @@ class Gui extends JFrame implements Runnable {
 					ServerConnection.lock.notify();
 				}
 				usrListModel.removeAllElements();
-				//for(int i = 0;i < Main.allClients.size();i++)
-					usrListModel.addElement(Main.allClients.get(0));
+				synchronized (usrListNotif) {
+					try {
+						usrListNotif.wait();
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					};
+				}
+				for(int i = 0;i < Main.allClients.size();i++)
+					usrListModel.addElement(Main.allClients.get(i));
 			}
 		});
 	}
