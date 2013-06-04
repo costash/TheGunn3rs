@@ -28,6 +28,7 @@ public class Main {
 	public static String downFolder;
 	public static String msg;
 	public static String signature;
+	public static boolean gui = false;
 
 	/**
 	 * @param args
@@ -46,8 +47,10 @@ public class Main {
 			System.err.println("Cannot bind any port");
 			e1.printStackTrace();
 		}
-		if(args.length == 1)
+		if(args.length == 1){
+			gui = true;
 			(new Gui()).run();//daca aplicatia este pornita cu -gui
+		}
 		else
 			(new CommandsParser()).start();
 		
