@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
+
 import com.example.FileSharing.Main;
 
 /**
@@ -42,29 +44,31 @@ public class ServerApplication extends Thread {
 				Main.pairing.put(info.getAlias(),
 						new Info(info.getIp(), info.getPort()));
 			}
-			
+
 			System.out.println(info.toString());
 		} catch (IOException | ClassNotFoundException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		
+
 		while (connected) {
 			int code = 1000;
 			String clientRequest = new String();
 			try {
 				code = ois.readInt();
-				
+
 				if (code == 1002)
 					clientRequest = (String) ois.readObject();
 
+			} catch (SocketException e) {
+				dispatchClient();
 			} catch (IOException e) {
 				dispatchClient();
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-			
+
 			switch (code) {
 			case 1001:
 				try {
@@ -78,7 +82,7 @@ public class ServerApplication extends Thread {
 			case 1002:
 				Info i = Main.pairing.get(clientRequest);
 				try {
-					oos.writeObject(new ClientInfo(clientRequest,i.ip,i.port));
+					oos.writeObject(new ClientInfo(clientRequest, i.ip, i.port));
 					oos.flush();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -91,7 +95,7 @@ public class ServerApplication extends Thread {
 
 		}
 	}
-	
+
 	private void dispatchClient() {
 		connected = false;
 		System.err.println("Client has closed connection");

@@ -31,7 +31,7 @@ public class Main {
 
 		listeningPort = Integer.parseInt(args[0]);
 
-		System.err.println("Port is " + listeningPort);
+		System.err.println("Server is listening on port " + listeningPort);
 
 		ServerSocket serverSocket = null;
 		boolean listening = true;
@@ -44,7 +44,10 @@ public class Main {
 			System.exit(-1);
 		}
 		
-
+		/* Wait for quit command on separate thread */
+		new ReadStdin().start();
+		
+		/* Listen for new socket connections */
 		while (listening) {
 			Socket client = null;
 			try {
