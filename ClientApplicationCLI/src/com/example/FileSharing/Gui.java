@@ -10,30 +10,30 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.StringTokenizer;
 
+@SuppressWarnings("serial")
 class Gui extends JFrame implements Runnable {
-	public DefaultListModel model1,usrListModel;
+	@SuppressWarnings("rawtypes")
+	public DefaultListModel model1, usrListModel;
 	public static String usrListNotif = new String();
 	public JPanel usrPanel = new JPanel();
 
 	public Gui() {
 		super();
 
-		/* Bara de meniu BEGIN */
-
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		JMenu fileMenu = new JMenu("File");
 		JMenu ViewMenu = new JMenu("View");
 		JMenu helpMenu = new JMenu("Help");
-		JMenu optiuniMenu = new JMenu("Optiuni");
+		JMenu optiuniMenu = new JMenu("Options");
 		menuBar.add(fileMenu);
 		menuBar.add(ViewMenu);
 		menuBar.add(optiuniMenu);
 		menuBar.add(helpMenu);
 		JMenuItem connectAction = new JMenuItem("Connect");
 		JMenuItem exitAction = new JMenuItem("Exit");
-		fileMenu.add(exitAction);
 		fileMenu.add(connectAction);
+		fileMenu.add(exitAction);
 
 		/* Listener for the current window */
 		addWindowListener(new WindowListener() {
@@ -87,7 +87,7 @@ class Gui extends JFrame implements Runnable {
 		FinishedUploads.setSelected(false);
 		FinishedDownloads.setSelected(false);
 
-		JMenuItem infoAction = new JMenuItem("Despre...");
+		JMenuItem infoAction = new JMenuItem("About...");
 		helpMenu.add(infoAction);
 
 		exitAction.addActionListener(new ActionListener() {
@@ -185,7 +185,7 @@ class Gui extends JFrame implements Runnable {
 								+ "Created by:\n\nStudentii de la 333CA\n"
 								+ "Constantin Serban-Radoi\n"
 								+ "Laurentiu Tuca\n"
-								+ "\nSi studentii de la 333CC\n"
+								+ "\nSi studentii de la 333CC(mai deloc\n"
 								+ "Mihaela Culcus\n" + "Rares Petrescu\n"
 								+ "\n�2013 TheGunn3rs", "Despre program",
 						JOptionPane.PLAIN_MESSAGE);// informatii
@@ -299,8 +299,8 @@ class Gui extends JFrame implements Runnable {
 
 		JSplitPane JUpLeft = new JSplitPane(JSplitPane.VERTICAL_SPLIT, JSearch,
 				JMessageSend);
-		JSplitPane JUpRight = new JSplitPane(JSplitPane.VERTICAL_SPLIT, usrPanel,
-				JMesReceived);
+		JSplitPane JUpRight = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+				usrPanel, JMesReceived);
 		JSplitPane JUpCenter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				JUpLeft, Results);
 		JSplitPane JUpAll = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
@@ -378,17 +378,17 @@ class Gui extends JFrame implements Runnable {
 		}
 	}
 
-	private void userListHandle(JList usrList,
-			JButton refreshButton) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void userListHandle(JList usrList, JButton refreshButton) {
 		usrListModel = new DefaultListModel();
 		usrList.setModel(usrListModel);
 		usrList.setSize(100, 100);
-		getServerUserList(usrList, refreshButton);
-		usrPanel.add(usrList);
+		getServerUserList(refreshButton);
 		usrPanel.add(refreshButton);
+		usrPanel.add(usrList);
 	}
 
-	private void getServerUserList(JList usrList, JButton refreshButton) {
+	private void getServerUserList(JButton refreshButton) {
 		refreshButton.addMouseListener(new MouseListener() {
 
 			@Override
@@ -411,6 +411,7 @@ class Gui extends JFrame implements Runnable {
 
 			}
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				ServerConnection.op_code = 1001;
@@ -423,10 +424,12 @@ class Gui extends JFrame implements Runnable {
 						usrListNotif.wait();
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
-					};
+					}
+					;
 				}
-				for(int i = 0;i < Main.allClients.size();i++)
+				for (int i = 0; i < Main.allClients.size(); i++)
 					usrListModel.addElement(Main.allClients.get(i));
+				pack();
 			}
 		});
 	}
