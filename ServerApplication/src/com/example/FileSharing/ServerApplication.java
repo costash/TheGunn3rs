@@ -74,6 +74,7 @@ public class ServerApplication extends Thread {
 			switch (code) {
 			case 1001:
 				try {
+					System.out.println(Main.clients.toString());
 					oos.writeObject(Main.clients);
 					oos.flush();
 				} catch (IOException e) {

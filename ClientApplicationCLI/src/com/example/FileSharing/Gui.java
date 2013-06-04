@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 class Gui extends JFrame implements Runnable {
 	public DefaultListModel model1,usrListModel;
 	public static String usrListNotif = new String();
+	public JPanel usrPanel = new JPanel();
 
 	public Gui() {
 		super();
@@ -301,10 +302,9 @@ class Gui extends JFrame implements Runnable {
 		Results.add(lst);
 
 		/* PANOU Userlist */
-		JPanel JUser = new JPanel();
 		JList lstuser = new JList();
 		JButton refresh = new JButton("Refresh");
-		userListHandle(JUser, lstuser, refresh);
+		userListHandle(lstuser, refresh);
 		
 
 		/* PANOU Mesaje */
@@ -321,7 +321,7 @@ class Gui extends JFrame implements Runnable {
 
 		JSplitPane JUpLeft = new JSplitPane(JSplitPane.VERTICAL_SPLIT, JSearch,
 				JMessageSend);
-		JSplitPane JUpRight = new JSplitPane(JSplitPane.VERTICAL_SPLIT, JUser,
+		JSplitPane JUpRight = new JSplitPane(JSplitPane.VERTICAL_SPLIT, usrPanel,
 				JMesReceived);
 		JSplitPane JUpCenter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				JUpLeft, Results);
@@ -404,7 +404,7 @@ class Gui extends JFrame implements Runnable {
 		}
 	}
 
-	private void userListHandle(JPanel usrPanel, JList usrList,
+	private void userListHandle(JList usrList,
 			JButton refreshButton) {
 		usrListModel = new DefaultListModel();
 		usrList.setModel(usrListModel);

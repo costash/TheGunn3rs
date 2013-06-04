@@ -88,10 +88,10 @@ public class ServerConnection extends Thread {
 			case 1001:
 				try {
 					@SuppressWarnings("unchecked")
-					ArrayList<String> clients = (ArrayList<String>) ois
-							.readObject();
-					System.out.println(clients.toString());
-					Main.allClients = clients;
+					ArrayList<String> clients = null;
+					System.out.println(((ArrayList<String>) ois
+							.readObject()).toString());
+					//Main.allClients = new ArrayList<String>(clients);
 					if(Main.gui){
 						synchronized (Gui.usrListNotif) {
 							Gui.usrListNotif.notify();
