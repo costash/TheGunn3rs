@@ -280,17 +280,17 @@ class Gui extends JFrame implements Runnable {
 		model1.addElement("PETRESCU  Rares");
 		Results.add(lst);
 
-		/* PANOU Userlist */
-		JList lstuser = new JList();
-		JButton refresh = new JButton("Refresh");
-		userListHandle(lstuser, refresh);
-
 		/* PANOU Mesaje */
-		JPanel JMesReceived = new JPanel();
+		JPanel usrListPanel = new JPanel();
 		JList lstmsg = new JList();
 		model1 = new DefaultListModel();
 		lstmsg.setModel(model1);
-		lstmsg.setSize(100, 100);
+		lstmsg.setSize(300, 300);
+		
+		/* PANOU Userlist */
+		JList lstuser = new JList();
+		JButton refresh = new JButton("Refresh");
+		userListHandle(usrListPanel, lstuser, refresh);
 
 		/* PANOU Jos */
 		JPanel JDown = new JPanel();
@@ -300,7 +300,7 @@ class Gui extends JFrame implements Runnable {
 		JSplitPane JUpLeft = new JSplitPane(JSplitPane.VERTICAL_SPLIT, JSearch,
 				JMessageSend);
 		JSplitPane JUpRight = new JSplitPane(JSplitPane.VERTICAL_SPLIT, usrPanel,
-				JMesReceived);
+				usrListPanel);
 		JSplitPane JUpCenter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				JUpLeft, Results);
 		JSplitPane JUpAll = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
@@ -378,14 +378,14 @@ class Gui extends JFrame implements Runnable {
 		}
 	}
 
-	private void userListHandle(JList usrList,
+	private void userListHandle(JPanel usrListPanel, JList usrList,
 			JButton refreshButton) {
 		usrListModel = new DefaultListModel();
 		usrList.setModel(usrListModel);
-		usrList.setSize(100, 100);
+		usrList.setSize(300, 300);
 		getServerUserList(usrList, refreshButton);
-		usrPanel.add(usrList);
 		usrPanel.add(refreshButton);
+		usrListPanel.add(usrList);
 	}
 
 	private void getServerUserList(JList usrList, JButton refreshButton) {
@@ -427,6 +427,7 @@ class Gui extends JFrame implements Runnable {
 				}
 				for(int i = 0;i < Main.allClients.size();i++)
 					usrListModel.addElement(Main.allClients.get(i));
+				pack();
 			}
 		});
 	}
