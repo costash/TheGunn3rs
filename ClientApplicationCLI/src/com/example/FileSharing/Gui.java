@@ -40,45 +40,38 @@ class Gui extends JFrame implements Runnable {
 
 			@Override
 			public void windowOpened(WindowEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void windowIconified(WindowEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-				// TODO Auto-generated method stub
 				dispose();
 				System.exit(0);
 			}
 
 			@Override
 			public void windowClosed(WindowEvent arg0) {
-				// TODO Auto-generated method stub
 				dispose();
 				System.exit(0);
 			}
 
 			@Override
 			public void windowActivated(WindowEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -123,32 +116,27 @@ class Gui extends JFrame implements Runnable {
 
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
-						// TODO Auto-generated method stub
 						connectServerActivity(frameGetConnectIp, textIp,
 								textPort);
 					}
 
 					@Override
 					public void mouseEntered(MouseEvent arg0) {
-						// TODO Auto-generated method stub
 
 					}
 
 					@Override
 					public void mouseExited(MouseEvent arg0) {
-						// TODO Auto-generated method stub
 
 					}
 
 					@Override
 					public void mousePressed(MouseEvent arg0) {
-						// TODO Auto-generated method stub
 
 					}
 
 					@Override
 					public void mouseReleased(MouseEvent arg0) {
-						// TODO Auto-generated method stub
 
 					}
 
@@ -158,18 +146,15 @@ class Gui extends JFrame implements Runnable {
 
 					@Override
 					public void keyTyped(KeyEvent arg0) {
-						// TODO Auto-generated method stub
 					}
 
 					@Override
 					public void keyReleased(KeyEvent arg0) {
-						// TODO Auto-generated method stub
 
 					}
 
 					@Override
 					public void keyPressed(KeyEvent arg0) {
-						// TODO Auto-generated method stub
 						if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
 							System.err.println("enter pressed on button");
 							connectServerActivity(frameGetConnectIp, textIp,
@@ -186,7 +171,6 @@ class Gui extends JFrame implements Runnable {
 				getIpPanel.add(textPort);
 				getIpPanel.add(connectButton);
 
-				
 				frameGetConnectIp.add(getIpPanel);
 				frameGetConnectIp.setLayout(new FlowLayout());
 				frameGetConnectIp.pack();
@@ -258,31 +242,26 @@ class Gui extends JFrame implements Runnable {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
 				System.exit(0);
 			}
 		});
@@ -305,7 +284,6 @@ class Gui extends JFrame implements Runnable {
 		JList lstuser = new JList();
 		JButton refresh = new JButton("Refresh");
 		userListHandle(lstuser, refresh);
-		
 
 		/* PANOU Mesaje */
 		JPanel JMesReceived = new JPanel();
@@ -346,7 +324,6 @@ class Gui extends JFrame implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -354,17 +331,14 @@ class Gui extends JFrame implements Runnable {
 		try {
 			Main.servSock = new ServerSocket(0);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		Main.alias = "laur";
 		try {
 			Main.connectionSock = new Socket(ip, port);
 		} catch (UnknownHostException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		} catch (IOException e3) {
-			// TODO Auto-generated catch block
 			e3.printStackTrace();
 		}
 		synchronized (Main.notifier) {
@@ -419,25 +393,21 @@ class Gui extends JFrame implements Runnable {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 

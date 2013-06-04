@@ -23,7 +23,6 @@ public class DownloadSlot extends Thread {
 				try {
 					DownloadSlot.peer.wait();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				peer = Main.peer;
@@ -44,17 +43,14 @@ public class DownloadSlot extends Thread {
 					oos.writeObject(fname);
 				oos.flush();
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 			try {
 				ois = new ObjectInputStream(s.getInputStream());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -66,7 +62,6 @@ public class DownloadSlot extends Thread {
 							.readObject();
 					System.out.println(files.toString());
 				} catch (ClassNotFoundException | IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
@@ -78,7 +73,6 @@ public class DownloadSlot extends Thread {
 					System.out.println("Transfer fisier realizat in "
 							+ (end - start)/1000000000 + " secunde");
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				break;
@@ -87,7 +81,6 @@ public class DownloadSlot extends Thread {
 					sendMsg(oos);
 					System.out.println(Main.signature+Main.msg);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				

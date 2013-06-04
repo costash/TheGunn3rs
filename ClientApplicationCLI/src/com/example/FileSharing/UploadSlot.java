@@ -29,7 +29,6 @@ public class UploadSlot extends Thread {
 			try {
 				oos = new ObjectOutputStream(self.getOutputStream());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -37,16 +36,14 @@ public class UploadSlot extends Thread {
 			try {
 				ois = new ObjectInputStream(self.getInputStream());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			//TODO tratam cazurile de tipuri de mesaje
+			// tratam cazurile de tipuri de mesaje
 			int msg_type = 1000;
 			try {
 				msg_type = ois.readInt();
 			} catch (IOException e3) {
-				// TODO Auto-generated catch block
 				e3.printStackTrace();
 			}
 			
@@ -57,16 +54,13 @@ public class UploadSlot extends Thread {
 					fname = (String) ois.readObject();
 					fname = Main.folder+"/"+fname;
 				} catch (ClassNotFoundException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				} catch (IOException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 				try {
 					sendFile(new File(fname), oos);
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				break;
@@ -74,7 +68,6 @@ public class UploadSlot extends Thread {
 				try {
 					sendFileList(oos);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				break;
@@ -82,10 +75,8 @@ public class UploadSlot extends Thread {
 				try {
 					System.out.println((String)ois.readObject());;
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			default:
@@ -123,7 +114,6 @@ public class UploadSlot extends Thread {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

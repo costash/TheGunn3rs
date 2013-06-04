@@ -19,7 +19,6 @@ public class ServerConnection extends Thread {
 		try {
 			oos = new ObjectOutputStream(Main.connectionSock.getOutputStream());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		this.ip = ip;
@@ -38,7 +37,6 @@ public class ServerConnection extends Thread {
 			oos.writeObject(myInfo);
 			oos.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -54,7 +52,6 @@ public class ServerConnection extends Thread {
 				try {
 					lock.wait();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -65,7 +62,6 @@ public class ServerConnection extends Thread {
 					oos.writeInt(op_code);
 					oos.flush();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
@@ -76,7 +72,6 @@ public class ServerConnection extends Thread {
 					oos.writeObject(client);
 					oos.flush();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
@@ -98,10 +93,8 @@ public class ServerConnection extends Thread {
 						}
 					}
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				break;
@@ -114,10 +107,8 @@ public class ServerConnection extends Thread {
 								info.getPort()));
 					}
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				System.out.println(info.toString());
