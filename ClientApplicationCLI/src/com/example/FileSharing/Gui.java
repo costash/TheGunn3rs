@@ -101,12 +101,10 @@ class Gui extends JFrame implements Runnable {
 			}
 		});
 
-		final JFrame frameGetConnectIp = new JFrame("Conenct to server");
-
 		connectAction.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				final JFrame frameGetConnectIp = new JFrame("Conenct to server");
 
 				JPanel getIpPanel = new JPanel();
 				JLabel labelIp = new JLabel("Introduceti IP-ul serverului:");
@@ -186,6 +184,7 @@ class Gui extends JFrame implements Runnable {
 				getIpPanel.add(textPort);
 				getIpPanel.add(connectButton);
 
+				
 				frameGetConnectIp.add(getIpPanel);
 				frameGetConnectIp.setLayout(new FlowLayout());
 				frameGetConnectIp.pack();

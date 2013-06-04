@@ -19,6 +19,7 @@ public class ServerApplication extends Thread {
 
 	private Socket selfSocket = null;
 	private boolean connected = false;
+	private String alias = null;
 
 	public ServerApplication(Socket client) {
 		selfSocket = client;
@@ -36,13 +37,14 @@ public class ServerApplication extends Thread {
 			ois = new ObjectInputStream(selfSocket.getInputStream());
 			ClientInfo info = (ClientInfo) ois.readObject();
 
+			alias = info.getAlias();
+
 			synchronized (Main.clients) {
-				Main.clients.add(info.getAlias());
+				Main.clients.add(alias);
 			}
 
 			synchronized (Main.pairing) {
-				Main.pairing.put(info.getAlias(),
-						new Info(info.getIp(), info.getPort()));
+				Main.pairing.put(alias, new Info(info.getIp(), info.getPort()));
 			}
 
 			System.out.println(info.toString());
@@ -98,6 +100,12 @@ public class ServerApplication extends Thread {
 
 	private void dispatchClient() {
 		connected = false;
+		synchronized (Main.pairing) {
+			Main.pairing.remove(alias);
+		}
+		synchronized (Main.clients) {
+			Main.clients.remove(alias);
+		}
 		System.err.println("Client has closed connection");
 	}
 }
