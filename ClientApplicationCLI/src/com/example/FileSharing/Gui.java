@@ -10,29 +10,158 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.StringTokenizer;
 
+/**
+ * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
+ * Builder, which is free for non-commercial use. If Jigloo is being used
+ * commercially (ie, by a corporation, company or business for any purpose
+ * whatever) then you should purchase a license for each developer using Jigloo.
+ * Please visit www.cloudgarden.com for details. Use of Jigloo implies
+ * acceptance of these licensing terms. A COMMERCIAL LICENSE HAS NOT BEEN
+ * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
+ * ANY CORPORATE OR COMMERCIAL PURPOSE.
+ */
 @SuppressWarnings("serial")
 class Gui extends JFrame implements Runnable {
 	@SuppressWarnings("rawtypes")
 	public DefaultListModel model1, usrListModel;
 	public static String usrListNotif = new String();
+	private JMenuItem dFold;
+	private JMenuItem settingsMenu;
+	private JMenu jSearchMenu;
+	private JMenuItem detMenu;
+	private JMenuItem upFold;
 	public JPanel usrPanel = new JPanel();
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Gui() {
-		super();
+		super("Gunn3rsDC++");
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		JMenu fileMenu = new JMenu("File");
 		JMenu ViewMenu = new JMenu("View");
-		JMenu helpMenu = new JMenu("Help");
 		JMenu optiuniMenu = new JMenu("Options");
 		menuBar.add(fileMenu);
 		menuBar.add(ViewMenu);
 		menuBar.add(optiuniMenu);
-		menuBar.add(helpMenu);
+		{
+			jSearchMenu = new JMenu();
+			menuBar.add(jSearchMenu);
+			jSearchMenu.setText("Search");
+			jSearchMenu.addMouseListener(new MouseListener() {
+				
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mousePressed(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseExited(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					// TODO Auto-generated method stub
+					SearchFrame sf = new SearchFrame();
+					//SettingsFrame sf = new SettingsFrame();
+				}
+			});
+		}
+		{
+			JMenu helpMenu = new JMenu("Help");
+			menuBar.add(helpMenu);
+			{
+				detMenu = new JMenuItem();
+				helpMenu.add(detMenu);
+				detMenu.setText("Details");
+			}
+			{
+				JMenuItem infoAction = new JMenuItem("About...");
+				helpMenu.add(infoAction);
+				infoAction.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						JOptionPane
+								.showMessageDialog(
+										new JFrame(),
+										"TheGunn3rs Project\n"
+												+ "Created by:\n\nStudentii de la 333CA\n"
+												+ "Constantin Serban-Radoi\n"
+												+ "Laurentiu Tuca\n"
+												+ "\nSi studentii de la 333CC(mai deloc)\n"
+												+ "Mihaela Culcus\n"
+												+ "Rares Petrescu\n"
+												+ "\n�2013 TheGunn3rs",
+										"Despre program",
+										JOptionPane.PLAIN_MESSAGE);// informatii
+						// despre
+						// program
+					}
+				});
+			}
+		}
+		{
+			upFold = new JMenuItem();
+			optiuniMenu.add(upFold);
+			upFold.setText("Select share folder");
+		}
+		{
+			dFold = new JMenuItem();
+			optiuniMenu.add(dFold);
+			dFold.setText("Select download folder");
+		}
 		JMenuItem connectAction = new JMenuItem("Connect");
 		JMenuItem exitAction = new JMenuItem("Exit");
 		fileMenu.add(connectAction);
+		{
+			settingsMenu = new JMenuItem();
+			fileMenu.add(settingsMenu);
+			settingsMenu.setText("Settings");
+			settingsMenu.addMouseListener(new MouseListener() {
+				public void mouseClicked(MouseEvent evt) {
+					settingsMenuMouseClicked(evt);
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+					// TODO Auto-generated method stub
+					JFrame set = new JFrame("Settings");
+					set.setVisible(true);
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+		}
 		fileMenu.add(exitAction);
 
 		/* Listener for the current window */
@@ -87,9 +216,6 @@ class Gui extends JFrame implements Runnable {
 		FinishedUploads.setSelected(false);
 		FinishedDownloads.setSelected(false);
 
-		JMenuItem infoAction = new JMenuItem("About...");
-		helpMenu.add(infoAction);
-
 		exitAction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);// iesire la apasarea butonului exit din meniu
@@ -99,11 +225,12 @@ class Gui extends JFrame implements Runnable {
 		connectAction.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final JFrame frameGetConnectIp = new JFrame("Conenct to server");
+				final JFrame frameGetConnectIp = new JFrame("Connect to server");
 
 				JPanel getIpPanel = new JPanel();
-				JLabel labelIp = new JLabel("Introduceti IP-ul serverului:");
-				JLabel labelPort = new JLabel("Introduceti port-ul serverului:");
+				JLabel labelIp = new JLabel(
+						"Enter the IP address of the server:");
+				JLabel labelPort = new JLabel("Enter port:");
 				JButton connectButton = new JButton("Connect");
 
 				final JTextField textIp = new JTextField(30);
@@ -178,21 +305,7 @@ class Gui extends JFrame implements Runnable {
 
 			}
 		});
-		infoAction.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(new JFrame(),
-						"TheGunn3rs Project\n"
-								+ "Created by:\n\nStudentii de la 333CA\n"
-								+ "Constantin Serban-Radoi\n"
-								+ "Laurentiu Tuca\n"
-								+ "\nSi studentii de la 333CC(mai deloc\n"
-								+ "Mihaela Culcus\n" + "Rares Petrescu\n"
-								+ "\n�2013 TheGunn3rs", "Despre program",
-						JOptionPane.PLAIN_MESSAGE);// informatii
-													// despre
-													// program
-			}
-		});
+
 		FinishedUploads.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (FinishedUploads.isSelected()) {
@@ -214,79 +327,31 @@ class Gui extends JFrame implements Runnable {
 				}
 			}
 		});
-		/* Bara de meniu END */
-
-		JPanel Mesaj = new JPanel();
-		JPanel ToConnect = new JPanel();
-		JPanel Stare = new JPanel();
-		JTextField tf = new JTextField(30);
 
 		/* PANOU CAUTARE */
-		JPanel JSearch = new JPanel();
-		JLabel LabelSearch = new JLabel("Cautare:");
-		JTextField SearchText = new JTextField(15);
-		JButton butSearch = new JButton("Search");
 
 		// butSearch.setSize(5, 3);
 
-		JSearch.add(LabelSearch);
-		JSearch.add(SearchText);
-		JSearch.add(butSearch);
-		JSearch.setLayout(new FlowLayout());
-
 		/* PANOU USER CONECT */
-		JPanel JMessageSend = new JPanel();
-		JLabel labelmes = new JLabel("Scrie mesajul:");
-		JButton SendMessage = new JButton("Send");
-		SendMessage.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.exit(0);
-			}
-		});
-		JTextField Message = new JTextField(15);
-		Message.getText();
-		JMessageSend.add(labelmes);
-		JMessageSend.add(Message);
-		JMessageSend.add(SendMessage);
 
 		/* PANOU REZULTATE */
 		JPanel Results = new JPanel();
+		Results.setPreferredSize(new java.awt.Dimension(246, 133));
 		JList lst = new JList();
 		model1 = new DefaultListModel();
 		lst.setModel(model1);
 		lst.setSize(100, 100);
-		model1.addElement("PETRESCU  Rares");
+		model1.addElement("L@ur");
 		Results.add(lst);
 
 		/* PANOU Mesaje */
 		JPanel usrListPanel = new JPanel();
+		usrListPanel.setPreferredSize(new java.awt.Dimension(358, 165));
 		JList lstmsg = new JList();
 		model1 = new DefaultListModel();
 		lstmsg.setModel(model1);
 		lstmsg.setSize(300, 300);
-		
+
 		/* PANOU Userlist */
 		JList lstuser = new JList();
 		JButton refresh = new JButton("Refresh");
@@ -294,15 +359,14 @@ class Gui extends JFrame implements Runnable {
 
 		/* PANOU Jos */
 		JPanel JDown = new JPanel();
-		JButton jos = new JButton("sgfsg");
-		JDown.add(jos);
+		JDown.setPreferredSize(new java.awt.Dimension(679, 72));
 
-		JSplitPane JUpLeft = new JSplitPane(JSplitPane.VERTICAL_SPLIT, JSearch,
-				JMessageSend);
-		JSplitPane JUpRight = new JSplitPane(JSplitPane.VERTICAL_SPLIT, usrPanel,
-				usrListPanel);
+		JSplitPane JUpRight = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+				usrPanel, usrListPanel);
+		JUpRight.setPreferredSize(new java.awt.Dimension(272, 135));
 		JSplitPane JUpCenter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				JUpLeft, Results);
+				null, Results);
+		JUpCenter.setPreferredSize(new java.awt.Dimension(310, 75));
 		JSplitPane JUpAll = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				JUpCenter, JUpRight);
 		JSplitPane JFinalPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
@@ -314,10 +378,15 @@ class Gui extends JFrame implements Runnable {
 		// add(JMessageSend);
 
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			{
+				usrPanel.setPreferredSize(new java.awt.Dimension(261, 32));
+			}
+			javax.swing.UIManager
+					.setLookAndFeel("com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
 		} catch (Exception e) {
 		}
 		pack();
+		this.setSize(691, 323);
 		setVisible(true);
 
 	}
@@ -433,6 +502,12 @@ class Gui extends JFrame implements Runnable {
 				pack();
 			}
 		});
+	}
+
+	private void settingsMenuMouseClicked(MouseEvent evt) {
+		System.out.println("settingsMenu.mouseClicked, event=" + evt);
+		// TODO add your code for settingsMenu.mouseClicked
+		System.exit(0);
 	}
 
 }
