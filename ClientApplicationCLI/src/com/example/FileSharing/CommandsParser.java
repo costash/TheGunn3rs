@@ -18,6 +18,7 @@ import java.util.Scanner;
 public class CommandsParser extends Thread {
 
 	private Scanner input = null;
+	private String notifier = new String();
 
 	public CommandsParser() {
 		input = new Scanner(System.in);
@@ -150,6 +151,11 @@ public class CommandsParser extends Thread {
 				synchronized (DownloadSlot.peer) {
 					DownloadSlot.peer.notify();
 				}
+				continue;
+			}
+			
+			if(com.equals("ip")){
+				Main.myIP = input.next();
 				continue;
 			}
 

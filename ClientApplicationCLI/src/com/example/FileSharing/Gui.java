@@ -77,8 +77,9 @@ class Gui extends JFrame implements Runnable {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					// TODO Auto-generated method stub
-					SearchFrame sf = new SearchFrame();
-					//SettingsFrame sf = new SettingsFrame();
+					// SearchFrame sf = new SearchFrame();
+					// SettingsFrame sf = new SettingsFrame();
+					ChatAndDownloadFrame chat = new ChatAndDownloadFrame(null);
 				}
 			});
 		}
@@ -102,7 +103,7 @@ class Gui extends JFrame implements Runnable {
 												+ "Created by:\n\nStudentii de la 333CA\n"
 												+ "Constantin Serban-Radoi\n"
 												+ "Laurentiu Tuca\n"
-												+ "\nSi studentii de la 333CC(mai deloc)\n"
+												+ "\nSi studentii de la 333CC\n"
 												+ "Mihaela Culcus\n"
 												+ "Rares Petrescu\n"
 												+ "\n�2013 TheGunn3rs",
@@ -341,7 +342,7 @@ class Gui extends JFrame implements Runnable {
 		model1 = new DefaultListModel();
 		lst.setModel(model1);
 		lst.setSize(100, 100);
-		model1.addElement("L@ur");
+		model1.addElement(null);
 		Results.add(lst);
 
 		/* PANOU Mesaje */
@@ -402,7 +403,9 @@ class Gui extends JFrame implements Runnable {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		Main.alias = "laur";
+		{
+			
+		}
 		try {
 			Main.connectionSock = new Socket(ip, port);
 		} catch (UnknownHostException e2) {

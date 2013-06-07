@@ -29,7 +29,7 @@ public class Main {
 	public static String msg;
 	public static String signature;
 	public static boolean gui = false;
-
+	public static String myIP = new String();
 	/**
 	 * @param args
 	 */
@@ -51,8 +51,7 @@ public class Main {
 			gui = true;
 			(new Gui()).run();//daca aplicatia este pornita cu -gui
 		}
-		else
-			(new CommandsParser()).start();
+		(new CommandsParser()).start();
 		
 		synchronized (notifier) {
 			try {
@@ -61,7 +60,7 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
-		(new ServerConnection("127.0.0.1")).start();//ne conectam la un server,de modif partea cu 127....
+		(new ServerConnection(myIP)).start();//ne conectam la un server,de modif partea cu 127....
 
 		for (int i = 0; i < MAXSLOTS; i++) {
 			(new UploadSlot()).start();
